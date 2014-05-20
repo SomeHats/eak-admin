@@ -9,3 +9,4 @@ pom.xml
 .lein-plugins/
 bower_components
 .nrepl-port
+/eak_admin.js

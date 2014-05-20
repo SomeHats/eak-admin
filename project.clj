@@ -14,11 +14,21 @@
   :source-paths ["src"]
 
   :cljsbuild {
-    :builds [{:id "eak-admin"
+    :builds [{:id "dev"
               :source-paths ["src"]
               :compiler {
                 :output-to "eak_admin.js"
                 :output-dir "out"
                 :optimizations :none
                 :pretty-print true
-                :source-map true}}]})
+                :source-map true}}
+             {:id "release"
+              :source-paths ["src"]
+              :compiler {
+                :output-to "eak_admin.js"
+                :output-dir "out/production"
+                :optimizations :advanced
+                :pretty-print false
+                :output-wrapper false
+                :preamble ["react/react.min.js"]
+                :externs ["react/externs/react.js"]}}]})
