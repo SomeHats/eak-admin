@@ -25,9 +25,14 @@
          :response-format :json
          :keywords? true
          :handler (fn [response]
-           (set-login! true)
-           (println response)
-           (swap! eak-admin.state/app-state assoc :user response))
+           (if (= "admin" (:state response))
+             (do
+               (set-login! true)
+               (println response)
+               (swap! eak-admin.state/app-state assoc :user response))
+             (do
+               (js/alert "Sorry! Only friendly admin folks can sign in here!")
+               (logout))))
          :error-handler (fn [res]
            (println res)
            (println (:original-text res))
@@ -65,7 +70,7 @@
        {:response-format :json
         :keywords? true
         :handler (fn [response]
-          (if (not-empty (:email response))
+          (if (and (not-empty (:email response)) (= "admin" (:state response)))
             (swap! eak-admin.state/app-state assoc :user response))
           (watch!))
         :error-handler (fn [] (js/alert "Oh no! Couldn't get your user :/"))})
