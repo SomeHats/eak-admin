@@ -20,6 +20,7 @@
 (defn persona-login [assertion]
   (POST "/api/users/me/persona"
         {:params {:assertion assertion}
+         :headers {:x-origin js/window.location.origin}
          :format :json
          :response-format :json
          :keywords? true

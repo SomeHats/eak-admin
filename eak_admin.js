@@ -7,5 +7,8 @@ goog.addDependency("../ajax/core.js", ['ajax.core'], ['goog.json.Serializer', 'g
 goog.addDependency("../om/dom.js", ['om.dom'], ['cljs.core']);
 goog.addDependency("../om/core.js", ['om.core'], ['cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
 goog.addDependency("../eak_admin/login.js", ['eak_admin.login'], ['cljs.core', 'ajax.core', 'om.core', 'eak_admin.state', 'om.dom']);
-goog.addDependency("../eak_admin/components.js", ['eak_admin.components'], ['cljs.core', 'om.core', 'eak_admin.login', 'om.dom']);
-goog.addDependency("../eak_admin/core.js", ['eak_admin.core'], ['cljs.core', 'om.core', 'eak_admin.login', 'eak_admin.state', 'om.dom', 'eak_admin.components']);
+goog.addDependency("../eak_admin/dashboard.js", ['eak_admin.dashboard'], ['cljs.core', 'ajax.core', 'om.core', 'om.dom']);
+goog.addDependency("../eak_admin/components.js", ['eak_admin.components'], ['cljs.core', 'om.core', 'eak_admin.dashboard', 'om.dom']);
+goog.addDependency("../clojure/walk.js", ['clojure.walk'], ['cljs.core']);
+goog.addDependency("../secretary/core.js", ['secretary.core'], ['cljs.core', 'clojure.walk', 'clojure.string']);
+goog.addDependency("../eak_admin/core.js", ['eak_admin.core'], ['goog.history.EventType', 'cljs.core', 'secretary.core', 'om.core', 'goog.History', 'eak_admin.login', 'eak_admin.state', 'om.dom', 'goog.events', 'eak_admin.components']);
