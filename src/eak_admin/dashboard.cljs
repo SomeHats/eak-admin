@@ -32,7 +32,7 @@
 (defn get-points [line {:keys [mouse-over mouse-out]}]
   (mapv (fn [point]
           (dom/circle #js {:className "point"
-                           :cx (:x point) :cy (:y point) :r 4
+                           :cx (:x point) :cy (:y point) :r 5
                            :onMouseOver mouse-over
                            :onMouseOut mouse-out
                            :title (str (string-keyword (:key point)) " - " (:value point))})) line))
