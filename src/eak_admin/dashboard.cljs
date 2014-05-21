@@ -35,7 +35,7 @@
                            :cx (:x point) :cy (:y point) :r 5
                            :onMouseOver mouse-over
                            :onMouseOut mouse-out
-                           :title (str (string-keyword (:key point)) " - " (:value point))})) line))
+                           :title (str (string-keyword (:key point)) " - " (.toFixed (:value point) 1))})) line))
 
 (defn big-num [{:keys [title value series]} owner]
   (reify
