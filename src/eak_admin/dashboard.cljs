@@ -73,10 +73,10 @@
                     line (line-series-points w h series)]
                 (apply dom/svg #js {:className "series" :width w :height h}
                   (dom/path #js {:d (get-path line)})
-                  (get-points line {:mouse-over (fn [e]
-                                                  (om/set-state! owner :title (.getAttribute (.-target e) "title")))
-                                    :mouse-out (fn [_]
-                                                 (om/set-state! owner :title nil))}))))
+                  (get-points line {:mouse-over
+                                      (fn [e] (om/set-state! owner :title (.getAttribute (.-target e) "title")))
+                                    :mouse-out
+                                      (fn [_] (om/set-state! owner :title nil))}))))
             (if (looks-nanish? value)
               (dom/div nil "Loading...")
               (dom/div #js {:className "num"} value ))))))))
@@ -120,4 +120,8 @@
                            :series (get-in state [:series-stats :kitten])})
         (om/build big-num {:title "Games Completed"
                            :value (str (.toFixed (* 100 (/ (get-in state [:sum-stats :show-form])
-                                                           (get-in state [:sum-stats :session]))) 1) "%")})))))
+                                                           (get-in state [:sum-stats :session]))) 1) "%")
+                           :series (let [played (get-in state [:series-stats :session])
+                                         finished (get-in state [:series-stats :show-form])]
+                                     (zipmap (keys played)
+                                       (mapv (fn [[k v]] (* 100 (/ (k finished) v))) (vec played))))})))))
