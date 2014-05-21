@@ -11,5 +11,6 @@
 }
 
 .big-num .num {
+  font-weight: 100;
   font-size: 100px;
 }

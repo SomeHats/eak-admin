@@ -9,8 +9,8 @@
     (render [this]
       (dom/div #js {:className "navbar navbar-default navbar-fixed-top"}
         (dom/div #js {:className "container"}
-          (dom/a #js {:className "navbar-brand"} "E.A.K. Admin")
-          (dom/a #js {:className "navbar-text hidden-xs"} (get-in app [:page :title]))
+          (dom/a #js {:className "navbar-brand" :href "#/"} "E.A.K. Admin")
+          (dom/p #js {:className "navbar-text hidden-xs"} (get-in app [:page :title]))
           (dom/div #js {:className "pull-right"}
             (dom/button #js {:className "btn btn-primary navbar-btn" :onClick eak-admin.login/logout} "Sign Out")
             (dom/p #js {:className "navbar-text hidden-xs"} (get-in app [:user :email]))))))))
