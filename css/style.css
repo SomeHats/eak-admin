@@ -22,6 +22,12 @@
   position: relative;
   z-index: 30;
   text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 1);
+  transition: opacity 0.3s ease;
+}
+
+.big-num:hover .series + .num {
+  pointer-events: none;
+  opacity: 0.2;
 }
 
 .big-num .series {
@@ -30,6 +36,12 @@
   z-index: 20;
   top: 0;
   left: 0;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.big-num:hover .series {
+  opacity: 1;
 }
 
 .series path {
@@ -39,6 +51,11 @@
 }
 
 .series circle {
+  opacity: 0;
   fill: #5D9DD4;
   stroke: transparent;
+}
+
+.big-num:hover .series circle {
+  opacity: 1;
 }

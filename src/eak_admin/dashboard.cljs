@@ -12,8 +12,10 @@
 (defn line-series-point [w h height pad mx mn]
   (fn [i item]
     (let [k (first item) v (last item) x (* i w) diff (- mx mn)]
-      (println "sample: " pad h v mx mn diff)
       {:key k :value v :x x :y (- height pad (* h (/ (- v mn) diff)))})))
+
+(defn string-keyword [kw]
+  (.replace (str kw) #"^\:" ""))
 
 (defn line-series-points [width height series]
   (let [ser (sort-by first (vec series))
@@ -27,16 +29,19 @@
 (defn get-path [line]
   (str "M " (string/join " L "(mapv (fn [point] (str (:x point) " " (:y point))) line))))
 
-(defn get-points [line]
+(defn get-points [line {:keys [mouse-over mouse-out]}]
   (mapv (fn [point]
           (dom/circle #js {:className "point"
                            :cx (:x point) :cy (:y point) :r 4
-                           :title (str (:key point) ": " (:value point))})) line))
+                           :onMouseOver mouse-over
+                           :onMouseOut mouse-out
+                           :title (str (string-keyword (:key point)) " - " (:value point))})) line))
 
 (defn big-num [{:keys [title value series]} owner]
   (reify
     om/IInitState
-    (init-state [_] {:size {:width nil :height nil}
+    (init-state [_] {:title nil
+                     :size {:width nil :height nil}
                      :resize-listener (fn [_]
                                         (let [el (.querySelector (om/get-node owner) ".panel-body")
                                               size {:width (.-clientWidth el) :height (.-clientHeight el)}]
@@ -58,7 +63,9 @@
     (render-state [this state]
       (dom/div #js {:className "col-md-4 big-num"}
         (dom/div #js {:className "panel panel-default"}
-          (dom/div #js {:className "panel-heading"} title)
+          (dom/div #js {:className "panel-heading"}
+                   (let [t (om/get-state owner :title)]
+                     (if (nil? t) title t)))
           (dom/div #js {:className "panel-body"}
             (if (not (nil? series))
               (let [w (om/get-state owner [:size :width])
@@ -66,7 +73,10 @@
                     line (line-series-points w h series)]
                 (apply dom/svg #js {:className "series" :width w :height h}
                   (dom/path #js {:d (get-path line)})
-                  (get-points line))))
+                  (get-points line {:mouse-over (fn [e]
+                                                  (om/set-state! owner :title (.getAttribute (.-target e) "title")))
+                                    :mouse-out (fn [_]
+                                                 (om/set-state! owner :title nil))}))))
             (if (looks-nanish? value)
               (dom/div nil "Loading...")
               (dom/div #js {:className "num"} value ))))))))
