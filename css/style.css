@@ -8,9 +8,36 @@
 
 .big-num {
   text-align: center;
+  overflow: hidden;
+}
+
+.big-num .panel-body {
+  position: relative;
+  overflow: hidden;
 }
 
 .big-num .num {
   font-weight: 100;
   font-size: 100px;
+  position: relative;
+  z-index: 30;
+}
+
+.big-num .series {
+  position: absolute;
+  display: block;
+  z-index: 20;
+  top: 0;
+  left: 0;
+}
+
+.series path {
+  fill: transparent;
+  stroke: #5D9DD4;
+  stroke-width: 2;
+}
+
+.series circle {
+  fill: #5D9DD4;
+  stroke: transparent;
 }
