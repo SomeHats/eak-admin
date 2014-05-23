@@ -95,7 +95,7 @@
     (will-mount [_]
       (do
         (GET "/api/events/sum"
-          {:params {:types "kitten,session,show-form"}
+          {:params {:types "kitten,session,show-form,edit,death,level"}
            :format :raw
            :response-format :json
            :keywords? true
@@ -103,7 +103,7 @@
            :handler (fn [response]
              (om/set-state! owner :sum-stats response)
              (GET "/api/events/series"
-               {:params {:types "kitten,session,show-form"}
+               {:params {:types "kitten,session,show-form,edit,death,level"}
                 :format :raw
                 :response-format :json
                 :keywords? true
@@ -111,17 +111,28 @@
 
     om/IRenderState
     (render-state [this state]
-      (dom/div #js {:className "row"}
-        (om/build big-num {:title "Games Played"
-                           :value (get-in state [:sum-stats :session])
-                           :series (get-in state [:series-stats :session])})
-        (om/build big-num {:title "Kittens Rescued"
-                           :value (get-in state [:sum-stats :kitten])
-                           :series (get-in state [:series-stats :kitten])})
-        (om/build big-num {:title "Games Completed"
-                           :value (str (.toFixed (* 100 (/ (get-in state [:sum-stats :show-form])
-                                                           (get-in state [:sum-stats :session]))) 1) "%")
-                           :series (let [played (get-in state [:series-stats :session])
-                                         finished (get-in state [:series-stats :show-form])]
-                                     (zipmap (keys played)
-                                       (mapv (fn [[k v]] (* 100 (/ (k finished) v))) (vec played))))})))))
+      (dom/div #js {:className "dashboard"}
+        (dom/div #js {:className "row"}
+          (om/build big-num {:title "Games Played"
+                             :value (get-in state [:sum-stats :session])
+                             :series (get-in state [:series-stats :session])})
+          (om/build big-num {:title "Kittens Rescued"
+                             :value (get-in state [:sum-stats :kitten])
+                             :series (get-in state [:series-stats :kitten])})
+          (om/build big-num {:title "Games Completed"
+                             :value (str (.toFixed (* 100 (/ (get-in state [:sum-stats :show-form])
+                                                             (get-in state [:sum-stats :session]))) 1) "%")
+                             :series (let [played (get-in state [:series-stats :session])
+                                           finished (get-in state [:series-stats :show-form])]
+                                       (zipmap (keys played)
+                                         (mapv (fn [[k v]] (* 100 (/ (k finished) v))) (vec played))))}))
+        (dom/div #js {:className "row"}
+          (om/build big-num {:title "Levels"
+                             :value (get-in state [:sum-stats :level])
+                             :series (get-in state [:series-stats :level])})
+          (om/build big-num {:title "Edits"
+                             :value (get-in state [:sum-stats :edit])
+                             :series (get-in state [:series-stats :edit])})
+          (om/build big-num {:title "Deaths"
+                             :value (get-in state [:sum-stats :death])
+                             :series (get-in state [:series-stats :death])}))))))
