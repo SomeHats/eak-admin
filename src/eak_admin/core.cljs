@@ -20,11 +20,12 @@
     :dashboard components/dashboard
     components/four-oh-four))
 
-(if (= js/document.location.hash "")
-  (set! js/document.location.hash "#/"))
-
 (let [h (History.)]
-  (goog.events/listen h EventType/NAVIGATE #(secretary/dispatch! (.-token %)))
+  (goog.events/listen h EventType/NAVIGATE
+    (fn [e]
+      (let [uri (.-token e)]
+        (println "uri:" uri)
+        (secretary/dispatch! (if (= uri "") "/" uri)))))
   (doto h (.setEnabled true)))
 
 (defn admin-app [app owner]
