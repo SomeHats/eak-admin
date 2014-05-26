@@ -138,4 +138,4 @@
                              :value (get-in state [:sum-stats :death])
                              :series (get-in state [:series-stats :death])}))
         (dom/h3 nil "Recent Sessions")
-        (om/build sessions/session-list {:limit 18 :offset 0})))))
+        (om/build sessions/session-list {:limit 12 :offset 0})))))

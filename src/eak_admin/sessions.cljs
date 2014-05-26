@@ -6,7 +6,7 @@
 
 (defn http-err [] (js/alert "Oh no! Couldn't load sessions"))
 
-(defn ors [x & xs] (if (nil? others) x (or x (apply ors xs))))
+(defn ors [x & xs] (if (nil? xs) x (or x (apply ors xs))))
 
 (defn fetch-sessions [limit offset cb]
   (GET "/api/events/sessions"
@@ -37,7 +37,7 @@
 (defn format-duration [n] (str (pad (int (/ n 60)) 0 2) ":" (pad (int (rem n 60)) 0 2)))
 
 (defn session-small [session]
-  (dom/div #js {:className "col-md-2 col-sm-3 session-small"}
+  (dom/div #js {:className "col-md-3 col-sm-4 col-xs-6 session-small"}
     (dom/a #js {:className (str "btn btn-block btn-" (get-color-class session)) :href (str "#/sessions/" (:id session))}
       (dom/div #js {:className "duration"} (format-duration (:duration session))))))
 
