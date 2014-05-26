@@ -2,7 +2,8 @@
   (:require [clojure.string :as string]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [ajax.core :refer [POST GET]]))
+            [ajax.core :refer [POST GET]]
+            [eak-admin.sessions :as sessions]))
 
 (defn looks-nanish? [v]
   (or (nil? v)
@@ -135,4 +136,6 @@
                              :series (get-in state [:series-stats :edit])})
           (om/build big-num {:title "Deaths"
                              :value (get-in state [:sum-stats :death])
-                             :series (get-in state [:series-stats :death])}))))))
+                             :series (get-in state [:series-stats :death])}))
+        (dom/h3 nil "Recent Sessions")
+        (om/build sessions/session-list {:limit 18 :offset 0})))))

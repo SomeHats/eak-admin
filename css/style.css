@@ -59,3 +59,12 @@
 .big-num:hover .series circle {
   opacity: 1;
 }
+
+.session-small {
+  margin-bottom: 30px;
+}
+
+.session-small .duration {
+  font-size: 36px;
+  font-weight: 100;
+}
