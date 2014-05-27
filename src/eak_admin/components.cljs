@@ -1,7 +1,8 @@
 (ns eak-admin.components
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [eak-admin.dashboard]))
+            [eak-admin.dashboard]
+            [eak-admin.sessions]))
 
 (defn header [app owner]
   (reify
@@ -23,3 +24,4 @@
 
 ;; Expose components from other namespaces:
 (def dashboard eak-admin.dashboard/component)
+(def session-index eak-admin.sessions/session-index)

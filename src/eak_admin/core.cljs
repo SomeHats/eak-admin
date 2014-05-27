@@ -12,12 +12,16 @@
 (defroute "/" []
   (swap! app-state assoc :page {:type :dashboard :title "Dashboard"}))
 
+(defroute "/sessions" []
+  (swap! app-state assoc :page {:type :session-index :title "Sessions"}))
+
 (defroute "*" []
   (swap! app-state assoc :page {:type :404 :title "404 - Page not found"}))
 
 (defn route [type]
   (case type
     :dashboard components/dashboard
+    :session-index components/session-index
     components/four-oh-four))
 
 (let [h (History.)]

@@ -140,5 +140,5 @@
         (dom/div #js {:className "row session-head"}
           (dom/h3 #js {:className "col-sm-10"} "Recent Sessions")
           (dom/div #js {:className "col-sm-2"}
-            (dom/a #js {:className "btn-block btn btn-default"} "More Sessions")))
+            (dom/a #js {:className "btn-block btn btn-default" :href "#/sessions"} "More Sessions")))
         (om/build sessions/session-list {:limit 12 :offset 0})))))

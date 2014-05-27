@@ -68,6 +68,10 @@
     (will-mount [_]
       (fetch-sessions limit offset #(om/set-state! owner :sessions %)))
 
+    om/IWillReceiveProps
+    (will-receive-props [_ next-props]
+      (fetch-sessions (:limit next-props) (:offset next-props) #(om/set-state! owner :sessions %)))
+
     om/IRenderState
     (render-state [this state]
       (apply dom/div #js {:className "row"}
@@ -75,3 +79,32 @@
           (if (nil? sessions)
             [(dom/div #js {:className "col-sm-12"} "Loading...")]
             (map session-small (reverse (sort-by :start-time sessions)))))))))
+
+(defn pagination [prev next]
+  (dom/div #js {:className "row pag"}
+    (dom/div #js {:className "col-sm-2"}
+      (dom/button #js {:className (str "btn btn-default btn-block" (if (nil? prev) " disabled" ""))
+                       :onClick prev} "Previous"))
+    (dom/div #js {:className "col-sm-2 col-sm-offset-8"}
+      (dom/button #js {:className (str "btn btn-default btn-block" (if (nil? next) " disabled" ""))
+                       :onClick next} "Next"))))
+
+(defn session-index [app owner]
+  (reify
+    om/IInitState
+    (init-state [_] {:per-page 24 :page 0})
+
+    om/IRenderState
+    (render-state [this state]
+      (let [pagin
+              (fn [] (pagination
+                (if (>= 0 (om/get-state owner :page))
+                  nil
+                  #(om/set-state! owner :page (dec (om/get-state owner :page))))
+                #(om/set-state! owner :page (inc (om/get-state owner :page)))))]
+        (dom/div nil
+          (dom/h2 nil "Sessions")
+          (pagin)
+          (let [per-page (om/get-state owner :per-page) page (om/get-state owner :page)]
+            (om/build session-list {:limit per-page :offset (* page per-page)}))
+          (pagin))))))
