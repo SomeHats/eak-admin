@@ -62,9 +62,21 @@
 
 .session-small {
   margin-bottom: 30px;
+  letter-spacing: 0.1em;
 }
 
 .session-small .duration {
   font-size: 36px;
+  font-weight: 100;
+}
+
+.prop h6 {
+  font-size: 12px;
+  font-weight: 200;
+  margin-bottom: 0.2em;
+}
+
+.prop .num {
+  font-size: 24px;
   font-weight: 100;
 }
