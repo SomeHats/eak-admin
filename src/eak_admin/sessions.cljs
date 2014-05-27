@@ -43,6 +43,12 @@
       (pad (str pad-char value) pad-char len))))
 
 (defn format-duration [n] (str (pad (int (/ n 60)) 0 2) ":" (pad (int (rem n 60)) 0 2)))
+(defn format-date [d-str]
+  (let [ts (js/Date.parse d-str) d (js/Date. ts)]
+    (str (pad (.getHours d) 0 2) ":" (pad (.getMinutes d) 0 2) ", "
+         (.getDate d) " "
+         (get ["Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"] (.getMonth d)) " "
+         (.getFullYear d))))
 
 (defn prop [title value]
   (dom/div #js {:className "prop col-xs-4"}
@@ -53,6 +59,7 @@
   (dom/div #js {:className "col-md-3 col-sm-4 col-xs-6 session-small"}
     (dom/a #js {:className (str "btn btn-block btn-" (get-color-class session)) :href (str "#/sessions/" (:id session))}
       (dom/div #js {:className "duration"} (format-duration (:duration session)))
+      (dom/div nil (format-date (:startTime session)))
       (dom/div #js {:className ""}
         (prop "Levels" (count-walk :type "level" session))
         (prop "Kittens" (count-walk :type "kitten" session))
