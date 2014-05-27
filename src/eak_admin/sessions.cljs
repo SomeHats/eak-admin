@@ -70,6 +70,7 @@
 
     om/IWillReceiveProps
     (will-receive-props [_ next-props]
+      (om/set-state! owner :sessions nil)
       (fetch-sessions (:limit next-props) (:offset next-props) #(om/set-state! owner :sessions %)))
 
     om/IRenderState
