@@ -60,6 +60,10 @@
   opacity: 1;
 }
 
+.session-head .btn {
+  margin-top: 10px;
+}
+
 .session-small {
   margin-bottom: 30px;
   letter-spacing: 0.1em;

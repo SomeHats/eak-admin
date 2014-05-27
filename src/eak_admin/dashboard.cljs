@@ -137,5 +137,8 @@
           (om/build big-num {:title "Deaths"
                              :value (get-in state [:sum-stats :death])
                              :series (get-in state [:series-stats :death])}))
-        (dom/h3 nil "Recent Sessions")
+        (dom/div #js {:className "row session-head"}
+          (dom/h3 #js {:className "col-sm-10"} "Recent Sessions")
+          (dom/div #js {:className "col-sm-2"}
+            (dom/a #js {:className "btn-block btn btn-default"} "More Sessions")))
         (om/build sessions/session-list {:limit 12 :offset 0})))))
