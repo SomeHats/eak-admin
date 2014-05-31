@@ -88,3 +88,38 @@
 .pag {
   margin-bottom: 30px;
 }
+
+.timeline .event {
+  position: relative;
+  height: 30px;
+  width: 0;
+  overflow: hidden;
+  padding: 0 15px;
+  margin-bottom: 10px;
+  border-radius: 30px;
+  background: #ddd;
+  border: 1px solid #aaa;
+  line-height: 25px;
+}
+
+.timeline .event:hover {
+  overflow: visible;
+}
+
+.timeline .event.point {
+  background: none;
+  border: none;
+  overflow: visible;
+  padding-left: 20px
+}
+.timeline .event.point:before {
+  content: " ";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  margin-left: -20px;
+  margin-top: 5px;
+  border-radius: 100%;
+  background: #ddd;
+  border: 1px solid #aaa;
+}

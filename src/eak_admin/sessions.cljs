@@ -2,7 +2,8 @@
   (:require [clojure.string :as string]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [ajax.core :refer [GET]]))
+            [ajax.core :refer [GET]]
+            [eak-admin.timeline :as timeline]))
 
 (defn http-err [] (js/alert "Oh no! Couldn't load sessions"))
 
@@ -116,3 +117,40 @@
           (let [per-page (om/get-state owner :per-page) page (om/get-state owner :page)]
             (om/build session-list {:limit per-page :offset (* page per-page)}))
           (pagin))))))
+
+(defn fetch-children-of [events cb]
+  (when (not (= 0 (count events)))
+    (GET "/api/events"
+         {:format :raw
+          :params {:parentId (string/join "," (map :id events))}
+          :response-format :json
+          :keywords? true
+          :error-handler http-err
+          :handler (fn [response]
+                     (cb (concat events response))
+                     (fetch-children-of response #(cb (concat events response %))))})))
+
+(defn recursive-fetch-events [id cb]
+  (GET (str "/api/events/" id)
+       {:format :raw
+        :response-format :json
+        :keywords? true
+        :error-handler http-err
+        :handler (fn [response]
+                   (cb [response])
+                   (fetch-children-of [response] #(cb (concat [response] %))))}))
+
+(defn session-detail [app owner]
+  (reify
+    om/IInitState
+    (init-state [_] {:events nil})
+
+    om/IWillMount
+    (will-mount [_]
+      (recursive-fetch-events (get-in app [:page :id]) #(om/set-state! owner :events %)))
+
+    om/IRenderState
+    (render-state [this state]
+      (dom/div nil
+        (dom/h1 nil (str "Session Details #" (get-in app [:page :id])))
+        (timeline/layout (:events state))))))

@@ -25,3 +25,4 @@
 ;; Expose components from other namespaces:
 (def dashboard eak-admin.dashboard/component)
 (def session-index eak-admin.sessions/session-index)
+(def session-detail eak-admin.sessions/session-detail)

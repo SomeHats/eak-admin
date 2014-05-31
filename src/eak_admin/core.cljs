@@ -15,6 +15,9 @@
 (defroute "/sessions" []
   (swap! app-state assoc :page {:type :session-index :title "Sessions"}))
 
+(defroute "/sessions/:id" {:as params}
+  (swap! app-state assoc :page {:type :session-detail :title (str "Session " (:id params)) :id (:id params)}))
+
 (defroute "*" []
   (swap! app-state assoc :page {:type :404 :title "404 - Page not found"}))
 
@@ -22,6 +25,7 @@
   (case type
     :dashboard components/dashboard
     :session-index components/session-index
+    :session-detail components/session-detail
     components/four-oh-four))
 
 (let [h (History.)]
