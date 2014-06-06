@@ -13,14 +13,14 @@
 (defn line-series-point [w h height pad mx mn]
   (fn [i item]
     (let [k (first item) v (last item) x (* i w) diff (- mx mn)]
-      {:key k :value v :x x :y (- height pad (* h (/ (- v mn) diff)))})))
+      {:key k :value v :x x :y (- height (* h (/ (- v mn) diff)))})))
 
 (defn string-keyword [kw]
   (.replace (str kw) #"^\:" ""))
 
 (defn line-series-points [width height series]
   (let [ser (sort-by first (vec series))
-        h (* (- 1 (* 2 pad-amt)) height)
+        h (* (- 1 (* pad-amt)) height)
         pad (* pad-amt height)
         w (/ width (- ( count series) 1))
         mx (apply max (mapv last ser))
